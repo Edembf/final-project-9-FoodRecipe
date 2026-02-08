@@ -8,6 +8,14 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
+  {
+  "expo": {
+    "name": "foodRecipe",
+    "slug": "my-foodRecipe-App",
+    "version": "1.0.0"
+  }
+}
+
   "dependencies": {
     "@expo/metro-runtime": "^3.2.3",
     "@react-native-async-storage/async-storage": "^2.0.0",
