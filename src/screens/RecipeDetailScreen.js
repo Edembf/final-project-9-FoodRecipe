@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux"; // Redux hooks
 import { toggleFavorite } from "../redux/favoritesSlice"; // Redux action
 
 export default function RecipeDetailScreen(props) {
-  const recipe = props.route.params; // recipe passed from previous screen
+  const { food: recipe } = props.route.params; // recipe passed from previous screen
 
   const dispatch = useDispatch();
   const favoriterecipes = useSelector(
@@ -33,6 +33,10 @@ export default function RecipeDetailScreen(props) {
     >
       {/* recipe Image */}
       <View style={styles.imageContainer} testID="imageContainer">
+        <Image
+          source={{ uri: recipe.recipeImage }}
+          style={styles.recipeImage}
+        />
      
       </View>
 
@@ -66,23 +70,58 @@ export default function RecipeDetailScreen(props) {
             testID="recipeDetailsContainer"
           >
             <Text style={styles.recipeTitle} testID="recipeTitle">
-         
+              <text testID="mealName">{recipe.recipeName}</text>
               
               </Text>
+            
             <Text style={styles.recipeCategory} testID="recipeCategory">
+                <text testID="mealCategory">{recipe.recipeCategory}</text>
               </Text>
           </View>
           <View style={styles.miscContainer} testID="miscContainer">
+              <View style={styles.miscItem}>
+          <Text style={styles.miscIcon}>🕒</Text>
+          <Text style={styles.miscText}>35 Mins</Text>
+        </View>
+        <View style={styles.miscItem}>
+          <Text style={styles.miscIcon}>👥</Text>
+          <Text style={styles.miscText}>03 Servings</Text>
+        </View>
+        <View style={styles.miscItem}>
+          <Text style={styles.miscIcon}>🔥</Text>
+          <Text style={styles.miscText}>103 Cal</Text>
+        </View>
+        <View style={styles.miscItem}>
+          <Text style={styles.miscIcon}>🎚️</Text>
+          <Text style={styles.miscText}>Medium</Text>
+        </View>
         
       </View>
 
       {/* Ingredients */}
       <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Ingredients</Text>
+        <View style={styles.ingredientsList} testID="ingredientsList">
+          {(recipe.ingredients).map((item, index) => (
+            <View key={item.id || index} style={styles.ingredientItem}>
+              <View style={styles.ingredientBullet} />
+              <Text style={styles.ingredientText}>
+                {/* {meal["strMeasure" + i]} {meal["strIngredient" + i]} */}
+                {item.ingredientName} {item.measure}
+              </Text>
+            </View>
+          ))}
+        </View>
+        <View style={styles.sectionTitle}>
+          
+        </View>
      
       </View>
 
       {/* Instructions */}
       <View style={styles.sectionContainer} testID="sectionContainer">
+        <Text style={styles.sectionTitle}>Instructions</Text>
+        <Text style={styles.instructionsText}>{recipe.recipeInstructions}</Text>
         
         </View>
           {/* Description */}

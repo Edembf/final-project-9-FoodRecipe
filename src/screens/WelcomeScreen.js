@@ -49,7 +49,7 @@ export default function WelcomeScreen() {
 
       {/* title and punchline */}
       <View style={styles.textContainer}>
-        <Text style={styles.title}>Foodie</Text>
+        <Text style={styles.title}>Foodie!</Text>
         <Text style={styles.subtitle}>your food recipe app</Text>
       </View>
     </View>

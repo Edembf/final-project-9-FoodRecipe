@@ -1,18 +1,39 @@
-import { View,Text,TextInput,TouchableOpacity,Image,StyleSheet,} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {widthPercentageToDP as wp,heightPercentageToDP as hp,} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default function RecipesFormScreen({ route, navigation }) {
-  const { recipeToEdit, recipeIndex, onrecipeEdited } = route.params || {};
-  const [title, setTitle] = useState(recipeToEdit ? recipeToEdit.title : "");
-  const [image, setImage] = useState(recipeToEdit ? recipeToEdit.image : "");
+  // Have Change: Match the parameter names sent from MyRecipeScreen (recipe and index)
+  const { recipe, index } = route.params || {}; 
+  
+  // Have Change: Use the correct variable 'recipe' to initialize states
+  const [title, setTitle] = useState(recipe ? recipe.title : "");
+  const [image, setImage] = useState(recipe ? recipe.image : "");
   const [description, setDescription] = useState(
-    recipeToEdit ? recipeToEdit.description : ""
+    recipe ? recipe.description : ""
   );
 
   const saverecipe = async () => {
- 
+    const newRecipe = { title, image, description };
+    try {
+      const storedRecipes = await AsyncStorage.getItem("customrecipes");
+      const recipes = storedRecipes ? JSON.parse(storedRecipes) : [];
+
+      // Have Change: Use 'index' and 'recipe' to check if we are in edit mode
+      if (recipe !== undefined && index !== undefined) {
+        // Edit mode: replace the recipe at the specific index
+        recipes[index] = newRecipe;
+      } else {
+        // Add mode: push new recipe to array
+        recipes.push(newRecipe);
+      }
+
+      await AsyncStorage.setItem("customrecipes", JSON.stringify(recipes));
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error saving recipe:", error);
+    }
   };
 
   return (
